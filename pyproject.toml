@@ -6,7 +6,7 @@ authors = ["Emmanuel Sciara <emmanuel.sciara@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
+python = ">=3.10,<3.12"
 icecream = "^2.1.3"
 pandas = "^2.1.4"
 
