@@ -1,12 +1,15 @@
 from pathlib import Path
 
-from icecream import ic
+import pandas as pd
 
 from cleaning_loading_app.csv_io import (
     load_cvs_with_date_parsing,
     save_cvs_in_proper_format,
 )
-from cleaning_loading_app.transformations import remove_rows_with_empty_fields
+from cleaning_loading_app.transformations import (
+    remove_rows_with_empty_fields,
+    remove_rows_with_spaces_only_string_fields,
+)
 
 DATA_PATH = Path("data")
 PROCESSED_PATH = DATA_PATH / "processed"
@@ -18,16 +21,17 @@ def clean_and_load(incoming_file_path: Path) -> None:
     _check_expected_path_exists(REJECTED_PATH)
 
     df = load_cvs_with_date_parsing(incoming_file_path, ["date"])
+    all_dirty_elements = pd.DataFrame()
+
+    df, dirty_elements = remove_rows_with_spaces_only_string_fields(df)
+    all_dirty_elements = pd.concat([all_dirty_elements, dirty_elements])
 
     df, dirty_elements = remove_rows_with_empty_fields(df)
-
-    ic(df)
-    ic(dirty_elements)
+    all_dirty_elements = pd.concat([all_dirty_elements, dirty_elements])
 
     data_file_name = incoming_file_path.name
     save_cvs_in_proper_format(PROCESSED_PATH / data_file_name, df)
-
-    save_cvs_in_proper_format(REJECTED_PATH / data_file_name, dirty_elements)
+    save_cvs_in_proper_format(REJECTED_PATH / data_file_name, all_dirty_elements)
 
 
 def _check_expected_path_exists(path_to_check: Path) -> None:
