@@ -1,9 +1,6 @@
 from pathlib import Path
 
-from icecream import ic
-
 from cleaning_loading_app import cleaner_loader
-
 
 if __name__ == "__main__":
     import argparse
