@@ -16,7 +16,7 @@ def test_remove_rows_with_empty_fields() -> None:
     df = pd.read_csv(csv_content_stream, header=0)
 
     # When
-    result, rejected = remove_rows_with_empty_fields(df)
+    result, rejected = remove_rows_with_empty_fields(df, pd.DataFrame())
 
     # Then
     columns = ["id", "title"]
@@ -56,7 +56,7 @@ def test_remove_rows_with_spaces_only_string_fields() -> None:
     df = pd.read_csv(csv_content_stream, header=0)
 
     # When
-    result, rejected = remove_rows_with_spaces_only_string_fields(df)
+    result, rejected = remove_rows_with_spaces_only_string_fields(df, pd.DataFrame())
 
     # Then
     columns = ["id", "title", "journal"]

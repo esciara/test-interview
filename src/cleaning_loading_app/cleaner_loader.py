@@ -23,11 +23,11 @@ def clean_and_load(incoming_file_path: Path) -> None:
     df = load_cvs_with_date_parsing(incoming_file_path, ["date"])
     all_dirty_elements = pd.DataFrame()
 
-    df, dirty_elements = remove_rows_with_spaces_only_string_fields(df)
-    all_dirty_elements = pd.concat([all_dirty_elements, dirty_elements])
+    df, all_dirty_elements = remove_rows_with_spaces_only_string_fields(
+        df, all_dirty_elements
+    )
 
-    df, dirty_elements = remove_rows_with_empty_fields(df)
-    all_dirty_elements = pd.concat([all_dirty_elements, dirty_elements])
+    df, all_dirty_elements = remove_rows_with_empty_fields(df, all_dirty_elements)
 
     data_file_name = incoming_file_path.name
     save_cvs_in_proper_format(PROCESSED_PATH / data_file_name, df)
