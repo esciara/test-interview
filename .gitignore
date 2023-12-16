@@ -1,5 +1,7 @@
 test_python_de.pdf
 reports
+data/*
+!data/samples
 
 # From Python gitingore template at:
 # https://github.com/github/gitignore/blob/main/Python.gitignore
