@@ -8,6 +8,7 @@ from pandas import testing
 from cleaning_loading_app.csv_io import (
     load_cvs_with_date_parsing,
     save_cvs_in_proper_format,
+    load_json_without_date_parsing,
 )
 
 
@@ -35,6 +36,35 @@ def test_load_cvs_with_date_parsing_parses_dates_in_mixed_format() -> None:
 
     expected["date1"] = pd.to_datetime(expected["date1"])
     expected["date2"] = pd.to_datetime(expected["date2"])
+
+    testing.assert_frame_equal(result, expected)
+
+
+def test_load_json_without_date_parsing() -> None:
+    # Given
+    json_content = """[
+  {
+    "id": 9,
+    "date": "01/01/2020"
+  },
+  {
+    "id": 10,
+    "date": "01/12/2020"
+  }
+]"""
+    json_content_stream = StringIO(json_content)
+
+    # When
+    result = load_json_without_date_parsing(json_content_stream)
+
+    # Then
+    expected = pd.DataFrame(
+        [
+            [9, "01/01/2020"],
+            [10, "01/12/2020"],
+        ],
+        columns=["id", "date"],
+    )
 
     testing.assert_frame_equal(result, expected)
 

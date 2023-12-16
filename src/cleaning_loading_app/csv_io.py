@@ -18,6 +18,12 @@ def load_cvs_with_date_parsing(
     )
 
 
+def load_json_without_date_parsing(
+    file_path: Path | TextIO,
+) -> pd.DataFrame:
+    return pd.read_json(file_path, convert_dates=False, orient="records")
+
+
 def save_cvs_in_proper_format(file_path: Path | None, df: pd.DataFrame) -> str | None:
     if not df.empty:
         return df.to_csv(
