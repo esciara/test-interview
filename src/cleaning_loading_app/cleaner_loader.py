@@ -30,8 +30,13 @@ def clean_and_load(incoming_file_path: Path) -> None:
     df, all_dirty_elements = remove_rows_with_empty_fields(df, all_dirty_elements)
 
     data_file_name = incoming_file_path.name
-    save_cvs_in_proper_format(PROCESSED_PATH / data_file_name, df)
-    save_cvs_in_proper_format(REJECTED_PATH / data_file_name, all_dirty_elements)
+    processed_data_file_path = PROCESSED_PATH / data_file_name
+    rejected_data_file_path = REJECTED_PATH / data_file_name
+
+    processed_data_file_path.unlink()
+    save_cvs_in_proper_format(processed_data_file_path, df)
+    rejected_data_file_path.unlink()
+    save_cvs_in_proper_format(rejected_data_file_path, all_dirty_elements)
 
 
 def _check_expected_path_exists(path_to_check: Path) -> None:
