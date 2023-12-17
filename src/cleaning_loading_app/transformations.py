@@ -15,11 +15,11 @@ def remove_rows_with_empty_fields(
     return df_without_na, all_dirty_elements
 
 
-def remove_rows_with_spaces_only_string_fields(
+def remove_rows_with_empty_or_spaces_only_string_fields(
     df: pd.DataFrame,
     all_dirty_elements: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    condition = df.apply(lambda x: x.astype(str).str.contains(r"^\s+$").any(), axis=1)
+    condition = df.apply(lambda x: x.astype(str).str.contains(r"^\s*$").any(), axis=1)
 
     df_without_spaces = df[~condition]
     df_with_spaces = df[condition]
@@ -27,3 +27,15 @@ def remove_rows_with_spaces_only_string_fields(
     all_dirty_elements = pd.concat([all_dirty_elements, df_with_spaces])
 
     return df_without_spaces, all_dirty_elements
+
+
+def convert_string_to_dates(
+    df: pd.DataFrame,
+    date_column: str,
+    all_dirty_elements: pd.DataFrame,
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    # As the sample json data is correct, we will not go further in checks than do
+    # a simple conversion.
+    df[date_column] = pd.to_datetime(df[date_column], dayfirst=True)
+
+    return df, all_dirty_elements

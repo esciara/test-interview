@@ -9,7 +9,8 @@ from cleaning_loading_app.csv_io import (
 )
 from cleaning_loading_app.transformations import (
     remove_rows_with_empty_fields,
-    remove_rows_with_spaces_only_string_fields,
+    remove_rows_with_empty_or_spaces_only_string_fields,
+    convert_string_to_dates,
 )
 
 DATA_PATH = Path("data")
@@ -31,7 +32,10 @@ def clean_and_load(incoming_file_path: Path) -> None:
 
     all_dirty_elements = pd.DataFrame()
 
-    df, all_dirty_elements = remove_rows_with_spaces_only_string_fields(
+    if incoming_file_path.suffix == ".json":
+        df, all_dirty_elements = convert_string_to_dates(df, "date", all_dirty_elements)
+
+    df, all_dirty_elements = remove_rows_with_empty_or_spaces_only_string_fields(
         df, all_dirty_elements
     )
 
