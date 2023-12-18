@@ -30,6 +30,7 @@ def ingest_files() -> None:
     _clean_and_load_publications(INCOMING_FILES_PATH / "clinical_trials.csv")
     _clean_and_load_publications(INCOMING_FILES_PATH / "pubmed.csv")
     _clean_and_load_publications(INCOMING_FILES_PATH / "pubmed.json")
+    _clean_and_load_publications(INCOMING_FILES_PATH / "drugs.csv")
 
 
 def _clean_and_load_publications(incoming_file_path: Path) -> None:
@@ -39,9 +40,12 @@ def _clean_and_load_publications(incoming_file_path: Path) -> None:
         )
         return
 
+    pipeline_type = "drugs" if incoming_file_path.stem == "drugs" else "publications"
+
     logging.info(f"Cleaning and loading file '{incoming_file_path}'.")
     if incoming_file_path.suffix == ".csv":
-        df = load_cvs_with_date_parsing(incoming_file_path, ["date"])
+        date_columns = None if pipeline_type == "drugs" else ["date"]
+        df = load_cvs_with_date_parsing(incoming_file_path, date_columns)
     elif incoming_file_path.suffix == ".json":
         df = load_json_without_date_parsing(incoming_file_path)
     else:
@@ -53,14 +57,17 @@ def _clean_and_load_publications(incoming_file_path: Path) -> None:
 
     all_dirty_elements = pd.DataFrame()
 
-    if incoming_file_path.suffix == ".json":
-        df, all_dirty_elements = convert_string_to_dates(df, "date", all_dirty_elements)
+    if pipeline_type != "drugs":
+        if incoming_file_path.suffix == ".json":
+            df, all_dirty_elements = convert_string_to_dates(
+                df, "date", all_dirty_elements
+            )
 
-    df, all_dirty_elements = remove_rows_with_empty_or_spaces_only_string_fields(
-        df, all_dirty_elements
-    )
+        df, all_dirty_elements = remove_rows_with_empty_or_spaces_only_string_fields(
+            df, all_dirty_elements
+        )
 
-    df, all_dirty_elements = remove_rows_with_empty_fields(df, all_dirty_elements)
+        df, all_dirty_elements = remove_rows_with_empty_fields(df, all_dirty_elements)
 
     target_data_file_name = _build_target_data_file_name(incoming_file_path)
     ingested_data_file_path = INGESTED_DATA_PATH / target_data_file_name
