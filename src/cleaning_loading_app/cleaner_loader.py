@@ -28,13 +28,13 @@ from cleaning_loading_app.transformations import (
 def ingest_files() -> None:
     preliminary_checks_and_cleaning()
 
-    _clean_and_load_publications(INCOMING_FILES_PATH / "clinical_trials.csv")
-    _clean_and_load_publications(INCOMING_FILES_PATH / "pubmed.csv")
-    _clean_and_load_publications(INCOMING_FILES_PATH / "pubmed.json")
-    _clean_and_load_publications(INCOMING_FILES_PATH / "drugs.csv")
+    _clean_and_load_data_file(INCOMING_FILES_PATH / "clinical_trials.csv")
+    _clean_and_load_data_file(INCOMING_FILES_PATH / "pubmed.csv")
+    _clean_and_load_data_file(INCOMING_FILES_PATH / "pubmed.json")
+    _clean_and_load_data_file(INCOMING_FILES_PATH / "drugs.csv")
 
 
-def _clean_and_load_publications(incoming_file_path: Path) -> None:
+def _clean_and_load_data_file(incoming_file_path: Path) -> None:
     if not incoming_file_path.exists():
         logging.warning(
             f"No file to import: '{incoming_file_path}' not found. Doing nothing..."
