@@ -101,11 +101,30 @@ def lint(context):
 
 
 @task
+def isort(context):
+    context.run(f"poetry run isort src tests")
+
+
+@task
+def black(context):
+    context.run(f"poetry run black src tests")
+
+
+@task(isort, black)
 def format(context):
+    """
+    Enforce correct format with isort and black
+    """
+    pass
+
+
+@task
+def format_check(context):
     """
     Check format for compliance with black and isort
     """
-    context.run(f"poetry run ruff format src tests")
+    context.run(f"poetry run isort -c src tests")
+    context.run(f"poetry run black --check src tests")
 
 
 #################################################################
@@ -129,6 +148,7 @@ def test(context):
     Run unit tests
     """
     context.run("poetry run pytest")
+
 
 @task(aliases=["tox-test-default-version", "tox-py"])
 def tox_test(context):
@@ -270,7 +290,10 @@ namespace.add_task(clean_venv)
 namespace.add_task(all_checks)
 namespace.add_task(all_locals)
 namespace.add_task(test)
+namespace.add_task(isort)
+namespace.add_task(black)
 namespace.add_task(format)
+namespace.add_task(format_check)
 namespace.add_task(lint)
 namespace.add_task(type)
 namespace.add_task(tox)

@@ -56,7 +56,7 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run format checks
-        run: poetry run invoke format
+        run: poetry run invoke format_check
 
   lint:
     runs-on: ubuntu-latest
