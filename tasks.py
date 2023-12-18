@@ -1,6 +1,24 @@
 from invoke import Collection, task
 
 #################################################################
+# running the pipeline
+#################################################################
+
+@task
+def copy_sample_files(context):
+    """
+    Run the pipeline
+    """
+    context.run("cp data/samples/* data/data_files/incoming/")
+
+@task
+def run_ingestion(context):
+    """
+    Run the pipeline
+    """
+    context.run("poetry run python src/main.py")
+
+#################################################################
 # cleaning
 #################################################################
 
@@ -269,6 +287,8 @@ def all_locals(context):
 
 
 namespace = Collection()
+namespace.add_task(run_ingestion)
+namespace.add_task(copy_sample_files)
 
 namespace_tox = Collection("tox_")
 namespace_tox.add_task(tox_test, name="test")

@@ -1,6 +1,29 @@
 # Interview test
 
-## Travail à réaliser
+## Lancer le code
+
+### Prérequis
+
+- Python 3.11 (avec retrocompatibilité 3.10)
+- [Poetry](https://python-poetry.org/)
+
+### Installation
+
+```bash
+poetry install
+```
+
+### Lancer la pipeline
+
+```bash
+# Mettre les fichiers d'exemple dans le dossier d'arrivée
+poetry run invoke copy-sample-files
+
+# Executer la pipeline
+poetry run invoke run-ingestion
+```
+
+## Travail à réaliser (réponses)
 
 ### Réutilisation des étapes du pipeline
 
