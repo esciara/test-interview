@@ -39,3 +39,13 @@ def convert_string_to_date(
     df[date_column] = pd.to_datetime(df[date_column], dayfirst=True)
 
     return df, all_dirty_elements
+
+
+def ensure_column_is_int(
+    df: pd.DataFrame,
+    column: str,
+    all_dirty_elements: pd.DataFrame,
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    df[column] = df[column].astype("int64")
+
+    return df, all_dirty_elements

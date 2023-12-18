@@ -19,8 +19,9 @@ from cleaning_loading_app.filesystem import (
 )
 from cleaning_loading_app.transformations import (
     convert_string_to_date,
-    remove_rows_with_nan_fields,
+    ensure_column_is_int,
     remove_rows_with_empty_or_spaces_only_string_fields,
+    remove_rows_with_nan_fields,
 )
 
 
@@ -40,7 +41,7 @@ def _clean_and_load_publications(incoming_file_path: Path) -> None:
         )
         return
 
-    pipeline_type = "drugs" if incoming_file_path.stem == "drugs" else "publications"
+    pipeline_type = incoming_file_path.stem
 
     logging.info(f"Cleaning and loading file '{incoming_file_path}'.")
     if incoming_file_path.suffix == ".csv":
@@ -68,6 +69,9 @@ def _clean_and_load_publications(incoming_file_path: Path) -> None:
         )
 
         df, all_dirty_elements = remove_rows_with_nan_fields(df, all_dirty_elements)
+
+        if pipeline_type == "pubmed":
+            df, all_dirty_elements = ensure_column_is_int(df, "id", all_dirty_elements)
 
     target_data_file_name = _build_target_data_file_name(incoming_file_path)
     ingested_data_file_path = INGESTED_DATA_PATH / target_data_file_name

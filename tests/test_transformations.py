@@ -7,8 +7,9 @@ from pandas._testing import assert_frame_equal
 
 from cleaning_loading_app.transformations import (
     convert_string_to_date,
-    remove_rows_with_nan_fields,
+    ensure_column_is_int,
     remove_rows_with_empty_or_spaces_only_string_fields,
+    remove_rows_with_nan_fields,
 )
 
 
@@ -113,6 +114,32 @@ def test_convert_string_to_date() -> None:
     )
 
     expected["date"] = pd.to_datetime(expected["date"])
+
+    assert_frame_equal(result, expected)
+    assert_that(rejected.empty, equal_to(True))
+
+
+def test_ensure_column_is_int() -> None:
+    # Given
+    df = pd.DataFrame(
+        [
+            [1],
+            ["2"],
+        ],
+        columns=["id"],
+    )
+
+    # When
+    result, rejected = ensure_column_is_int(df, "id", pd.DataFrame())
+
+    # Then
+    expected = pd.DataFrame(
+        [
+            [1],
+            [2],
+        ],
+        columns=["id"],
+    )
 
     assert_frame_equal(result, expected)
     assert_that(rejected.empty, equal_to(True))
