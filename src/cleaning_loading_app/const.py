@@ -1,0 +1,9 @@
+from pathlib import Path
+
+DATA_PATH = Path("data")
+DATAFILES_PATH = DATA_PATH / "data_files"
+DATALAKE_PATH = DATA_PATH / "datalake"
+INCOMING_FILES_PATH = DATAFILES_PATH / "incoming"
+PROCESSED_FILES_PATH = DATAFILES_PATH / "processed"
+INGESTED_DATA_PATH = DATALAKE_PATH / "ingested"
+REJECTED_DATA_PATH = DATALAKE_PATH / "rejected"
