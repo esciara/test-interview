@@ -83,30 +83,5 @@ def _clean_and_load_data_file(incoming_file_path: Path) -> None:
     move_processed_file(incoming_file_path)
 
 
-def _clean_and_load_drugs(incoming_file_path: Path) -> None:
-    if not incoming_file_path.exists():
-        logging.warning(
-            f"No file to import: '{incoming_file_path}' not found. Doing nothing..."
-        )
-        return
-
-    logging.info(f"Cleaning and loading file '{incoming_file_path}'.")
-    if incoming_file_path.suffix == ".csv":
-        df = load_cvs_with_date_parsing(incoming_file_path)
-    else:
-        logging.warning(
-            f"Unsupported file suffix {incoming_file_path.suffix!r}. "
-            "Aborting processing..."
-        )
-        exit(1)
-
-    target_data_file_name = _build_target_data_file_name(incoming_file_path)
-    ingested_data_file_path = INGESTED_DATA_PATH / target_data_file_name
-
-    save_cvs_in_proper_format(ingested_data_file_path, df)
-
-    move_processed_file(incoming_file_path)
-
-
 def _build_target_data_file_name(incoming_file_path: Path) -> str:
     return incoming_file_path.with_suffix(".csv").name
