@@ -6,19 +6,19 @@ from numpy import NaN
 from pandas._testing import assert_frame_equal
 
 from cleaning_loading_app.transformations import (
-    convert_string_to_dates,
-    remove_rows_with_empty_fields,
+    convert_string_to_date,
+    remove_rows_with_nan_fields,
     remove_rows_with_empty_or_spaces_only_string_fields,
 )
 
 
-def test_remove_rows_with_empty_fields() -> None:
+def test_remove_rows_with_nan_fields() -> None:
     # Given
     csv_content_stream = StringIO('id,title\n1,"title1"\n"",title2\n3,title3\n"4",""\n')
     df = pd.read_csv(csv_content_stream, header=0)
 
     # When
-    result, rejected = remove_rows_with_empty_fields(df, pd.DataFrame())
+    result, rejected = remove_rows_with_nan_fields(df, pd.DataFrame())
 
     # Then
     columns = ["id", "title"]
@@ -90,7 +90,7 @@ def test_remove_rows_with_spaces_only_string_fields() -> None:
     assert_frame_equal(rejected, expected_rejected)
 
 
-def test_convert_string_to_dates() -> None:
+def test_convert_string_to_date() -> None:
     # Given
     df = pd.DataFrame(
         [
@@ -101,7 +101,7 @@ def test_convert_string_to_dates() -> None:
     )
 
     # When
-    result, rejected = convert_string_to_dates(df, "date", pd.DataFrame())
+    result, rejected = convert_string_to_date(df, "date", pd.DataFrame())
 
     # Then
     expected = pd.DataFrame(

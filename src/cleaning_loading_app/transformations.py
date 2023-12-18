@@ -3,7 +3,7 @@ from typing import Tuple
 import pandas as pd
 
 
-def remove_rows_with_empty_fields(
+def remove_rows_with_nan_fields(
     df: pd.DataFrame,
     all_dirty_elements: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -29,7 +29,7 @@ def remove_rows_with_empty_or_spaces_only_string_fields(
     return df_without_spaces, all_dirty_elements
 
 
-def convert_string_to_dates(
+def convert_string_to_date(
     df: pd.DataFrame,
     date_column: str,
     all_dirty_elements: pd.DataFrame,

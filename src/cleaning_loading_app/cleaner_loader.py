@@ -18,8 +18,8 @@ from cleaning_loading_app.filesystem import (
     preliminary_checks_and_cleaning,
 )
 from cleaning_loading_app.transformations import (
-    convert_string_to_dates,
-    remove_rows_with_empty_fields,
+    convert_string_to_date,
+    remove_rows_with_nan_fields,
     remove_rows_with_empty_or_spaces_only_string_fields,
 )
 
@@ -59,7 +59,7 @@ def _clean_and_load_publications(incoming_file_path: Path) -> None:
 
     if pipeline_type != "drugs":
         if incoming_file_path.suffix == ".json":
-            df, all_dirty_elements = convert_string_to_dates(
+            df, all_dirty_elements = convert_string_to_date(
                 df, "date", all_dirty_elements
             )
 
@@ -67,7 +67,7 @@ def _clean_and_load_publications(incoming_file_path: Path) -> None:
             df, all_dirty_elements
         )
 
-        df, all_dirty_elements = remove_rows_with_empty_fields(df, all_dirty_elements)
+        df, all_dirty_elements = remove_rows_with_nan_fields(df, all_dirty_elements)
 
     target_data_file_name = _build_target_data_file_name(incoming_file_path)
     ingested_data_file_path = INGESTED_DATA_PATH / target_data_file_name
