@@ -26,9 +26,15 @@ def load_json_without_date_parsing(
 
 def save_cvs_in_proper_format(file_path: Path | None, df: pd.DataFrame) -> str | None:
     if not df.empty:
+        write_header = True
+        if file_path is not None and file_path.exists():
+            write_header = False
+
         return df.to_csv(
             file_path,
             index=False,
+            header=write_header,
+            mode="a",
             quoting=csv.QUOTE_NONNUMERIC,
         )
     return None

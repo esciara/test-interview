@@ -22,6 +22,31 @@ def clean_and_load(incoming_file_path: Path) -> None:
     _check_expected_path_exists(PROCESSED_PATH)
     _check_expected_path_exists(REJECTED_PATH)
 
+    _cleanup_target_files(incoming_file_path)
+
+    _clean_and_load_publications(incoming_file_path.with_suffix(".csv"))
+    _clean_and_load_publications(incoming_file_path.with_suffix(".json"))
+
+
+def _check_expected_path_exists(path_to_check: Path) -> None:
+    if not path_to_check.exists():
+        print(
+            f"Path for processed files '{path_to_check.absolute()}' does not exist. "
+            "Please create before proceeding."
+        )
+        exit(1)
+
+
+def _cleanup_target_files(incoming_file_path: Path) -> None:
+    target_data_file_name = _build_target_data_file_name(incoming_file_path)
+    processed_data_file_path = PROCESSED_PATH / target_data_file_name
+    rejected_data_file_path = REJECTED_PATH / target_data_file_name
+
+    processed_data_file_path.unlink(missing_ok=True)
+    rejected_data_file_path.unlink(missing_ok=True)
+
+
+def _clean_and_load_publications(incoming_file_path: Path) -> None:
     if incoming_file_path.suffix == ".csv":
         df = load_cvs_with_date_parsing(incoming_file_path, ["date"])
     elif incoming_file_path.suffix == ".json":
@@ -41,20 +66,13 @@ def clean_and_load(incoming_file_path: Path) -> None:
 
     df, all_dirty_elements = remove_rows_with_empty_fields(df, all_dirty_elements)
 
-    data_file_name = f"{incoming_file_path.stem}.csv"
-    processed_data_file_path = PROCESSED_PATH / data_file_name
-    rejected_data_file_path = REJECTED_PATH / data_file_name
+    target_data_file_name = _build_target_data_file_name(incoming_file_path)
+    processed_data_file_path = PROCESSED_PATH / target_data_file_name
+    rejected_data_file_path = REJECTED_PATH / target_data_file_name
 
-    processed_data_file_path.unlink(missing_ok=True)
     save_cvs_in_proper_format(processed_data_file_path, df)
-    rejected_data_file_path.unlink(missing_ok=True)
     save_cvs_in_proper_format(rejected_data_file_path, all_dirty_elements)
 
 
-def _check_expected_path_exists(path_to_check: Path) -> None:
-    if not path_to_check.exists():
-        print(
-            f"Path for processed files '{path_to_check.absolute()}' does not exist. "
-            "Please create before proceeding."
-        )
-        exit(1)
+def _build_target_data_file_name(incoming_file_path: Path) -> str:
+    return incoming_file_path.with_suffix(".csv").name
