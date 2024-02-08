@@ -4,8 +4,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - esciara
 
   - package-ecosystem: "github-actions"
     directory: "/"
