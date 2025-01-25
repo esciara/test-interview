@@ -2,7 +2,7 @@ from io import StringIO
 
 import pandas as pd
 from hamcrest import assert_that, equal_to
-from numpy import NaN
+from numpy import nan
 from pandas._testing import assert_frame_equal
 
 from cleaning_loading_app.transformations import (
@@ -35,8 +35,8 @@ def test_remove_rows_with_nan_fields() -> None:
 
     expected_rejected = pd.DataFrame(
         [
-            [NaN, "title2"],
-            [4, NaN],
+            [nan, "title2"],
+            [4, nan],
         ],
         index=[1, 3],
         columns=columns,
@@ -53,7 +53,7 @@ def test_remove_rows_with_spaces_only_string_fields() -> None:
     df = pd.DataFrame(
         [
             [1, "title1", "   "],
-            [NaN, "title2", "journal2"],
+            [nan, "title2", "journal2"],
             [3, "title3", "journal3"],
             [4, "", "journal4"],
         ],
@@ -69,7 +69,7 @@ def test_remove_rows_with_spaces_only_string_fields() -> None:
     # Then
     expected = pd.DataFrame(
         [
-            [NaN, "title2", "journal2"],
+            [nan, "title2", "journal2"],
             [3, "title3", "journal3"],
         ],
         index=[1, 2],
