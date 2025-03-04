@@ -19,7 +19,7 @@ pandas-stubs = "^2.2.3.241126"
 pyhamcrest = "^2.1.0"
 pytest = "^8.3.5"
 pytest-cov = "^6.0.0"
-ruff = "^0.9.4"
+ruff = "^0.9.9"
 
 [tool.pytest.ini_options]
 minversion = "7.0"
