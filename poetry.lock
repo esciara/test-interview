@@ -202,14 +202,14 @@ tests = ["asttokens (>=2.1.0)", "coverage", "coverage-enable-subprocess", "ipyth
 
 [[package]]
 name = "icecream"
-version = "2.1.6"
+version = "2.1.7"
 description = "Never use print() to debug again; inspect variables, expressions, and program execution with a single, simple function call."
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "icecream-2.1.6-py3-none-any.whl", hash = "sha256:2ff97c7624340e4791cbb439df7bfe16c35095a7864fef412f9bbaaaaab09463"},
-    {file = "icecream-2.1.6.tar.gz", hash = "sha256:f5e7955472aaef413fe84dad8d53b02d8a8637273c1f0fa1eaf08ce239462ce9"},
+    {file = "icecream-2.1.7-py3-none-any.whl", hash = "sha256:b52cdd40cb5080279c4534fcd77aa510b1e7397a687e9d4daf2f8d2028bd738c"},
+    {file = "icecream-2.1.7.tar.gz", hash = "sha256:936df053e65ff3c7a219fa79311b32bdae19aad83dd2e23d153ab8864b78acd9"},
 ]
 
 [package.dependencies]
@@ -783,4 +783,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "18029e2d331359b581ddcbf1fea414241c02684cffc2c550337caa5a7d7c1238"
+content-hash = "12a9c5109328d7fdd900b9c5e764f0e196b7fd5b39f991170d3e8ad00c195e61"
